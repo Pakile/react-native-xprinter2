@@ -20,3 +20,8 @@ const Xprinter2 = NativeModules.Xprinter2
 export function multiply(a: number, b: number): Promise<number> {
   return Xprinter2.multiply(a, b);
 }
+
+export function connect(ipAddress: string): Promise<boolean> {
+  return Xprinter2.connect(ipAddress);
+}
+
