@@ -6,10 +6,6 @@
 	objectVersion = 46;
 	objects = {
 
-/* Begin PBXBuildFile section */
-		5E555C0D2413F4C50049A1A2 /* Xprinter2.mm in Sources */ = {isa = PBXBuildFile; fileRef = B3E7B5891CC2AC0600A0062D /* Xprinter2.mm */; };
-/* End PBXBuildFile section */
-
 /* Begin PBXCopyFilesBuildPhase section */
 		58B511D91A9E6C8500147676 /* CopyFiles */ = {
 			isa = PBXCopyFilesBuildPhase;
@@ -24,6 +20,7 @@
 
 /* Begin PBXFileReference section */
 		134814201AA4EA6300B7C361 /* libXprinter2.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libXprinter2.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		6CB036E02BDABCB00049DD0D /* PrinterSDK */ = {isa = PBXFileReference; lastKnownFileType = folder; path = PrinterSDK; sourceTree = "<group>"; };
 		B3E7B5881CC2AC0600A0062D /* Xprinter2.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Xprinter2.h; sourceTree = "<group>"; };
 		B3E7B5891CC2AC0600A0062D /* Xprinter2.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Xprinter2.mm; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -50,6 +47,7 @@
 		58B511D21A9E6C8500147676 = {
 			isa = PBXGroup;
 			children = (
+				6CB036E02BDABCB00049DD0D /* PrinterSDK */,
 				B3E7B5881CC2AC0600A0062D /* Xprinter2.h */,
 				B3E7B5891CC2AC0600A0062D /* Xprinter2.mm */,
 				134814211AA4EA7D00B7C361 /* Products */,
@@ -113,7 +111,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				B3E7B58A1CC2AC0600A0062D /* Xprinter2.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
