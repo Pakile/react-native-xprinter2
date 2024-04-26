@@ -45,7 +45,6 @@ export function isConnect(): Promise<boolean> {
   return Xprinter2.isConnect();
 }
 
-export function setIp(ipAddress: String): Promise<boolean> {
-  return Xprinter2.setIp(ipAddress);
+export function setIp(address: String): Promise<boolean> {
+  return Xprinter2.setIp(address);
 }
-

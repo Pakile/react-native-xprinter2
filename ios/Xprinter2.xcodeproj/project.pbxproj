@@ -6,6 +6,10 @@
 	objectVersion = 46;
 	objects = {
 
+/* Begin PBXBuildFile section */
+		6CB037332BDC06A60049DD0D /* libPrinterSDK.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 6CB037312BDC06A60049DD0D /* libPrinterSDK.a */; };
+/* End PBXBuildFile section */
+
 /* Begin PBXCopyFilesBuildPhase section */
 		58B511D91A9E6C8500147676 /* CopyFiles */ = {
 			isa = PBXCopyFilesBuildPhase;
@@ -20,7 +24,25 @@
 
 /* Begin PBXFileReference section */
 		134814201AA4EA6300B7C361 /* libXprinter2.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libXprinter2.a; sourceTree = BUILT_PRODUCTS_DIR; };
-		6CB036E02BDABCB00049DD0D /* PrinterSDK */ = {isa = PBXFileReference; lastKnownFileType = folder; path = PrinterSDK; sourceTree = "<group>"; };
+		6CB0371E2BDC06A60049DD0D /* CPCLCommand.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CPCLCommand.h; sourceTree = "<group>"; };
+		6CB0371F2BDC06A60049DD0D /* KDS_Log.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KDS_Log.h; sourceTree = "<group>"; };
+		6CB037202BDC06A60049DD0D /* LabelDocument.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LabelDocument.h; sourceTree = "<group>"; };
+		6CB037212BDC06A60049DD0D /* LabelImageTranster.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LabelImageTranster.h; sourceTree = "<group>"; };
+		6CB037222BDC06A60049DD0D /* POSBLEManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = POSBLEManager.h; sourceTree = "<group>"; };
+		6CB037232BDC06A60049DD0D /* POSCommand.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = POSCommand.h; sourceTree = "<group>"; };
+		6CB037242BDC06A60049DD0D /* POSImageTranster.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = POSImageTranster.h; sourceTree = "<group>"; };
+		6CB037252BDC06A60049DD0D /* POSPrinter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = POSPrinter.h; sourceTree = "<group>"; };
+		6CB037262BDC06A60049DD0D /* POSPrinterSDK.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = POSPrinterSDK.h; sourceTree = "<group>"; };
+		6CB037272BDC06A60049DD0D /* POSWIFIManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = POSWIFIManager.h; sourceTree = "<group>"; };
+		6CB037282BDC06A60049DD0D /* PrinterProfile.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PrinterProfile.h; sourceTree = "<group>"; };
+		6CB037292BDC06A60049DD0D /* PTable.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PTable.h; sourceTree = "<group>"; };
+		6CB0372A2BDC06A60049DD0D /* TSCBLEManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TSCBLEManager.h; sourceTree = "<group>"; };
+		6CB0372B2BDC06A60049DD0D /* TSCCommand.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TSCCommand.h; sourceTree = "<group>"; };
+		6CB0372C2BDC06A60049DD0D /* TSCPrinterSDK.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TSCPrinterSDK.h; sourceTree = "<group>"; };
+		6CB0372D2BDC06A60049DD0D /* TSCWIFIManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TSCWIFIManager.h; sourceTree = "<group>"; };
+		6CB0372E2BDC06A60049DD0D /* WIFIConnecter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WIFIConnecter.h; sourceTree = "<group>"; };
+		6CB0372F2BDC06A60049DD0D /* ZPLCommand.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ZPLCommand.h; sourceTree = "<group>"; };
+		6CB037312BDC06A60049DD0D /* libPrinterSDK.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libPrinterSDK.a; sourceTree = "<group>"; };
 		B3E7B5881CC2AC0600A0062D /* Xprinter2.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Xprinter2.h; sourceTree = "<group>"; };
 		B3E7B5891CC2AC0600A0062D /* Xprinter2.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Xprinter2.mm; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -30,6 +52,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				6CB037332BDC06A60049DD0D /* libPrinterSDK.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -47,11 +70,45 @@
 		58B511D21A9E6C8500147676 = {
 			isa = PBXGroup;
 			children = (
-				6CB036E02BDABCB00049DD0D /* PrinterSDK */,
+				6CB037322BDC06A60049DD0D /* PrinterSDK */,
 				B3E7B5881CC2AC0600A0062D /* Xprinter2.h */,
 				B3E7B5891CC2AC0600A0062D /* Xprinter2.mm */,
 				134814211AA4EA7D00B7C361 /* Products */,
 			);
+			sourceTree = "<group>";
+		};
+		6CB037302BDC06A60049DD0D /* Headers */ = {
+			isa = PBXGroup;
+			children = (
+				6CB0371E2BDC06A60049DD0D /* CPCLCommand.h */,
+				6CB0371F2BDC06A60049DD0D /* KDS_Log.h */,
+				6CB037202BDC06A60049DD0D /* LabelDocument.h */,
+				6CB037212BDC06A60049DD0D /* LabelImageTranster.h */,
+				6CB037222BDC06A60049DD0D /* POSBLEManager.h */,
+				6CB037232BDC06A60049DD0D /* POSCommand.h */,
+				6CB037242BDC06A60049DD0D /* POSImageTranster.h */,
+				6CB037252BDC06A60049DD0D /* POSPrinter.h */,
+				6CB037262BDC06A60049DD0D /* POSPrinterSDK.h */,
+				6CB037272BDC06A60049DD0D /* POSWIFIManager.h */,
+				6CB037282BDC06A60049DD0D /* PrinterProfile.h */,
+				6CB037292BDC06A60049DD0D /* PTable.h */,
+				6CB0372A2BDC06A60049DD0D /* TSCBLEManager.h */,
+				6CB0372B2BDC06A60049DD0D /* TSCCommand.h */,
+				6CB0372C2BDC06A60049DD0D /* TSCPrinterSDK.h */,
+				6CB0372D2BDC06A60049DD0D /* TSCWIFIManager.h */,
+				6CB0372E2BDC06A60049DD0D /* WIFIConnecter.h */,
+				6CB0372F2BDC06A60049DD0D /* ZPLCommand.h */,
+			);
+			path = Headers;
+			sourceTree = "<group>";
+		};
+		6CB037322BDC06A60049DD0D /* PrinterSDK */ = {
+			isa = PBXGroup;
+			children = (
+				6CB037302BDC06A60049DD0D /* Headers */,
+				6CB037312BDC06A60049DD0D /* libPrinterSDK.a */,
+			);
+			path = PrinterSDK;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -221,7 +278,10 @@
 					"$(SRCROOT)/../../../React/**",
 					"$(SRCROOT)/../../react-native/React/**",
 				);
-				LIBRARY_SEARCH_PATHS = "$(inherited)";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/PrinterSDK",
+				);
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = Xprinter2;
 				SKIP_INSTALL = YES;
@@ -237,7 +297,10 @@
 					"$(SRCROOT)/../../../React/**",
 					"$(SRCROOT)/../../react-native/React/**",
 				);
-				LIBRARY_SEARCH_PATHS = "$(inherited)";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/PrinterSDK",
+				);
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = Xprinter2;
 				SKIP_INSTALL = YES;

@@ -44,34 +44,33 @@ export default function App() {
   };
   const handlePrint = () => {
     printBitmap(BILL_RECEIPT);
-    handleStatus();
   };
 
   return (
     <View style={styles.container}>
-      <View style={{ height: 40 }} />
+      <View style={styles.size40} />
       <TouchableOpacity onPress={() => handleDiscovery(0)}>
         <Text>discovery: USB</Text>
       </TouchableOpacity>
-      <View style={{ height: 40 }} />
+      <View style={styles.size40} />
       <TouchableOpacity onPress={() => handleDiscovery(1)}>
         <Text>discovery: NET</Text>
       </TouchableOpacity>
-      <View style={{ height: 40 }} />
+      <View style={styles.size40} />
       <TouchableOpacity onPress={handleConnect}>
         <Text>
           connect: address:{address} type: {type === 1 ? 'NET' : 'USB'}
         </Text>
       </TouchableOpacity>
-      <View style={{ height: 40 }} />
+      <View style={styles.size40} />
       <TouchableOpacity onPress={handleStatus}>
         <Text>status</Text>
       </TouchableOpacity>
-      <View style={{ height: 40 }} />
+      <View style={styles.size40} />
       <TouchableOpacity onPress={handlePrint}>
         <Text>print</Text>
       </TouchableOpacity>
-      <View style={{ height: 40 }} />
+      <View style={styles.size40} />
     </View>
   );
 }
@@ -81,11 +80,15 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
+    backgroundColor: 'white',
   },
   box: {
     width: 60,
     height: 60,
     marginVertical: 20,
+  },
+  size40: {
+    height: 40,
   },
 });
 

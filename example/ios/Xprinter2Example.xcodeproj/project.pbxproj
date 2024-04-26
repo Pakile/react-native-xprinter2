@@ -44,6 +44,25 @@
 		5B7EB9410499542E8C5724F5 /* Pods-Xprinter2Example-Xprinter2ExampleTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Xprinter2Example-Xprinter2ExampleTests.debug.xcconfig"; path = "Target Support Files/Pods-Xprinter2Example-Xprinter2ExampleTests/Pods-Xprinter2Example-Xprinter2ExampleTests.debug.xcconfig"; sourceTree = "<group>"; };
 		5DCACB8F33CDC322A6C60F78 /* libPods-Xprinter2Example.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Xprinter2Example.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		6CB036D92BDAB7A30049DD0D /* libPrinterSDK.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libPrinterSDK.a; path = PrinterSDK/libPrinterSDK.a; sourceTree = "<group>"; };
+		6CB037092BDC04DD0049DD0D /* CPCLCommand.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CPCLCommand.h; sourceTree = "<group>"; };
+		6CB0370A2BDC04DD0049DD0D /* KDS_Log.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = KDS_Log.h; sourceTree = "<group>"; };
+		6CB0370B2BDC04DD0049DD0D /* LabelDocument.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LabelDocument.h; sourceTree = "<group>"; };
+		6CB0370C2BDC04DD0049DD0D /* LabelImageTranster.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LabelImageTranster.h; sourceTree = "<group>"; };
+		6CB0370D2BDC04DD0049DD0D /* POSBLEManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = POSBLEManager.h; sourceTree = "<group>"; };
+		6CB0370E2BDC04DD0049DD0D /* POSCommand.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = POSCommand.h; sourceTree = "<group>"; };
+		6CB0370F2BDC04DD0049DD0D /* POSImageTranster.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = POSImageTranster.h; sourceTree = "<group>"; };
+		6CB037102BDC04DD0049DD0D /* POSPrinter.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = POSPrinter.h; sourceTree = "<group>"; };
+		6CB037112BDC04DD0049DD0D /* POSPrinterSDK.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = POSPrinterSDK.h; sourceTree = "<group>"; };
+		6CB037122BDC04DD0049DD0D /* POSWIFIManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = POSWIFIManager.h; sourceTree = "<group>"; };
+		6CB037132BDC04DD0049DD0D /* PrinterProfile.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PrinterProfile.h; sourceTree = "<group>"; };
+		6CB037142BDC04DD0049DD0D /* PTable.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PTable.h; sourceTree = "<group>"; };
+		6CB037152BDC04DD0049DD0D /* TSCBLEManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TSCBLEManager.h; sourceTree = "<group>"; };
+		6CB037162BDC04DD0049DD0D /* TSCCommand.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TSCCommand.h; sourceTree = "<group>"; };
+		6CB037172BDC04DD0049DD0D /* TSCPrinterSDK.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TSCPrinterSDK.h; sourceTree = "<group>"; };
+		6CB037182BDC04DD0049DD0D /* TSCWIFIManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TSCWIFIManager.h; sourceTree = "<group>"; };
+		6CB037192BDC04DD0049DD0D /* WIFIConnecter.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = WIFIConnecter.h; sourceTree = "<group>"; };
+		6CB0371A2BDC04DD0049DD0D /* ZPLCommand.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ZPLCommand.h; sourceTree = "<group>"; };
+		6CB0371C2BDC04DD0049DD0D /* libPrinterSDK.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libPrinterSDK.a; sourceTree = "<group>"; };
 		81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = LaunchScreen.storyboard; path = Xprinter2Example/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		89C6BE57DB24E9ADA2F236DE /* Pods-Xprinter2Example-Xprinter2ExampleTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Xprinter2Example-Xprinter2ExampleTests.release.xcconfig"; path = "Target Support Files/Pods-Xprinter2Example-Xprinter2ExampleTests/Pods-Xprinter2Example-Xprinter2ExampleTests.release.xcconfig"; sourceTree = "<group>"; };
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
@@ -112,6 +131,40 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
+		6CB0371B2BDC04DD0049DD0D /* Headers */ = {
+			isa = PBXGroup;
+			children = (
+				6CB037092BDC04DD0049DD0D /* CPCLCommand.h */,
+				6CB0370A2BDC04DD0049DD0D /* KDS_Log.h */,
+				6CB0370B2BDC04DD0049DD0D /* LabelDocument.h */,
+				6CB0370C2BDC04DD0049DD0D /* LabelImageTranster.h */,
+				6CB0370D2BDC04DD0049DD0D /* POSBLEManager.h */,
+				6CB0370E2BDC04DD0049DD0D /* POSCommand.h */,
+				6CB0370F2BDC04DD0049DD0D /* POSImageTranster.h */,
+				6CB037102BDC04DD0049DD0D /* POSPrinter.h */,
+				6CB037112BDC04DD0049DD0D /* POSPrinterSDK.h */,
+				6CB037122BDC04DD0049DD0D /* POSWIFIManager.h */,
+				6CB037132BDC04DD0049DD0D /* PrinterProfile.h */,
+				6CB037142BDC04DD0049DD0D /* PTable.h */,
+				6CB037152BDC04DD0049DD0D /* TSCBLEManager.h */,
+				6CB037162BDC04DD0049DD0D /* TSCCommand.h */,
+				6CB037172BDC04DD0049DD0D /* TSCPrinterSDK.h */,
+				6CB037182BDC04DD0049DD0D /* TSCWIFIManager.h */,
+				6CB037192BDC04DD0049DD0D /* WIFIConnecter.h */,
+				6CB0371A2BDC04DD0049DD0D /* ZPLCommand.h */,
+			);
+			path = Headers;
+			sourceTree = "<group>";
+		};
+		6CB0371D2BDC04DD0049DD0D /* PrinterSDK */ = {
+			isa = PBXGroup;
+			children = (
+				6CB0371B2BDC04DD0049DD0D /* Headers */,
+				6CB0371C2BDC04DD0049DD0D /* libPrinterSDK.a */,
+			);
+			path = PrinterSDK;
+			sourceTree = "<group>";
+		};
 		832341AE1AAA6A7D00B99B32 /* Libraries */ = {
 			isa = PBXGroup;
 			children = (
@@ -122,6 +175,7 @@
 		83CBB9F61A601CBA00E9B192 = {
 			isa = PBXGroup;
 			children = (
+				6CB0371D2BDC04DD0049DD0D /* PrinterSDK */,
 				13B07FAE1A68108700A75B9A /* Xprinter2Example */,
 				832341AE1AAA6A7D00B99B32 /* Libraries */,
 				00E356EF1AD99517003FC87E /* Xprinter2ExampleTests */,

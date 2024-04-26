@@ -83,5 +83,41 @@ RCT_EXPORT_METHOD(multiply:(double)a
     resolve(result);
 }
 
+RCT_EXPORT_METHOD(discovery:(nonnull NSNumber *)connType
+                  resolve:(RCTPromiseResolveBlock)resolve
+                  reject:(RCTPromiseRejectBlock)reject)
+{
+    resolve(@"NO");
+}
+
+RCT_EXPORT_METHOD(printerStatus:(RCTPromiseResolveBlock)resolve
+                  reject:(RCTPromiseRejectBlock)reject)
+{
+    resolve(@"NO");
+}
+
+RCT_EXPORT_METHOD(isConnect:(RCTPromiseResolveBlock)resolve
+                  reject:(RCTPromiseRejectBlock)reject)
+{
+    resolve(@"NO");
+}
+
+RCT_EXPORT_METHOD(setIp:(NSString *)adress 
+                  resolve:(RCTPromiseResolveBlock)resolve
+                  reject:(RCTPromiseRejectBlock)reject)
+{
+    resolve(@"NO");
+}
+
+RCT_EXPORT_METHOD(printBitmap:(NSString *)base64)
+{
+   
+}
+
+RCT_EXPORT_METHOD(openCashBox)
+{
+   
+}
+
 
 @end
