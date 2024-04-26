@@ -2,28 +2,74 @@ import * as React from 'react';
 import { useState } from 'react';
 
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
-import { connect } from 'react-native-xprinter2';
+import {
+  connect,
+  discovery,
+  printBitmap,
+  printerStatus,
+} from 'react-native-xprinter2';
 
 export default function App() {
-  const [address] = useState('192.168.1.28');
-
-  const handleConnect = () => {
-    connect(address)
+  const [address, setAddress] = useState('');
+  // 0 usb, 1 net
+  const [type, setType] = useState<0 | 1>(1);
+  const handleDiscovery = (_type: 0 | 1 = 1) => {
+    setType(_type);
+    discovery(_type)
       .then((res) => {
-        console.log('connect ios: ', res);
+        console.log('discovery', res);
+        setAddress(res);
       })
       .catch((er) => {
-        console.log('connect ios: error', er);
+        console.log('discovery', er);
       });
+  };
+  const handleConnect = () => {
+    connect(type, address)
+      .then((res) => {
+        console.log('connect', res);
+      })
+      .catch((er) => {
+        console.log('connect', er);
+      });
+  };
+  const handleStatus = () => {
+    printerStatus()
+      .then((res) => {
+        console.log('status', res);
+      })
+      .catch((er) => {
+        console.log('status', er);
+      });
+  };
+  const handlePrint = () => {
+    printBitmap(BILL_RECEIPT);
+    handleStatus();
   };
 
   return (
     <View style={styles.container}>
       <View style={{ height: 40 }} />
+      <TouchableOpacity onPress={() => handleDiscovery(0)}>
+        <Text>discovery: USB</Text>
+      </TouchableOpacity>
+      <View style={{ height: 40 }} />
+      <TouchableOpacity onPress={() => handleDiscovery(1)}>
+        <Text>discovery: NET</Text>
+      </TouchableOpacity>
+      <View style={{ height: 40 }} />
       <TouchableOpacity onPress={handleConnect}>
         <Text>
-          connect: address:{address} type: {'WIFI'}
+          connect: address:{address} type: {type === 1 ? 'NET' : 'USB'}
         </Text>
+      </TouchableOpacity>
+      <View style={{ height: 40 }} />
+      <TouchableOpacity onPress={handleStatus}>
+        <Text>status</Text>
+      </TouchableOpacity>
+      <View style={{ height: 40 }} />
+      <TouchableOpacity onPress={handlePrint}>
+        <Text>print</Text>
       </TouchableOpacity>
       <View style={{ height: 40 }} />
     </View>
@@ -35,7 +81,6 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: 'white',
   },
   box: {
     width: 60,

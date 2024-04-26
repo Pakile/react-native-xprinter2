@@ -20,18 +20,18 @@ RCT_EXPORT_MODULE()
 }
 
 
-RCT_EXPORT_METHOD(connect:(NSString *)ipAddress
+RCT_EXPORT_METHOD(connect:(NSNumber *)connType address:(NSString *)address
                   resolve:(RCTPromiseResolveBlock)resolve
                   reject:(RCTPromiseRejectBlock)reject)
 {
     _connectionResolve = resolve;
     _connectionReject = reject;
-    
+
     if (_wifiManager.isConnect) {
         [_wifiManager disconnect];
     }
-    
-    [_wifiManager connectWithHost:ipAddress port:9100];
+
+    [_wifiManager connectWithHost:address port:9100];
 
 }
 
