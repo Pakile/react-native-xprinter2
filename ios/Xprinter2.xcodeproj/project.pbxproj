@@ -7,7 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		6CB037332BDC06A60049DD0D /* libPrinterSDK.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 6CB037312BDC06A60049DD0D /* libPrinterSDK.a */; };
+		6CB0382B2BDD15E30049DD0D /* libPrinterSDK.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 6CB038292BDD15DA0049DD0D /* libPrinterSDK.a */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -43,6 +43,7 @@
 		6CB0372E2BDC06A60049DD0D /* WIFIConnecter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WIFIConnecter.h; sourceTree = "<group>"; };
 		6CB0372F2BDC06A60049DD0D /* ZPLCommand.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ZPLCommand.h; sourceTree = "<group>"; };
 		6CB037312BDC06A60049DD0D /* libPrinterSDK.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libPrinterSDK.a; sourceTree = "<group>"; };
+		6CB038292BDD15DA0049DD0D /* libPrinterSDK.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libPrinterSDK.a; path = PrinterSDK/libPrinterSDK.a; sourceTree = SOURCE_ROOT; };
 		B3E7B5881CC2AC0600A0062D /* Xprinter2.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Xprinter2.h; sourceTree = "<group>"; };
 		B3E7B5891CC2AC0600A0062D /* Xprinter2.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Xprinter2.mm; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -52,7 +53,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				6CB037332BDC06A60049DD0D /* libPrinterSDK.a in Frameworks */,
+				6CB0382B2BDD15E30049DD0D /* libPrinterSDK.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -70,10 +71,12 @@
 		58B511D21A9E6C8500147676 = {
 			isa = PBXGroup;
 			children = (
+				6CB038282BDD15760049DD0D /* Libraries */,
 				6CB037322BDC06A60049DD0D /* PrinterSDK */,
 				B3E7B5881CC2AC0600A0062D /* Xprinter2.h */,
 				B3E7B5891CC2AC0600A0062D /* Xprinter2.mm */,
 				134814211AA4EA7D00B7C361 /* Products */,
+				6CB0382A2BDD15E30049DD0D /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -109,6 +112,21 @@
 				6CB037312BDC06A60049DD0D /* libPrinterSDK.a */,
 			);
 			path = PrinterSDK;
+			sourceTree = "<group>";
+		};
+		6CB038282BDD15760049DD0D /* Libraries */ = {
+			isa = PBXGroup;
+			children = (
+				6CB038292BDD15DA0049DD0D /* libPrinterSDK.a */,
+			);
+			path = Libraries;
+			sourceTree = "<group>";
+		};
+		6CB0382A2BDD15E30049DD0D /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Frameworks;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
