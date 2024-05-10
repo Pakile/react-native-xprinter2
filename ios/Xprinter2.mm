@@ -1,4 +1,5 @@
 #import "Xprinter2.h"
+#import "POSCommand.h"
 
 @implementation Xprinter2{
     POSWIFIManager *_wifiManager;
@@ -87,18 +88,46 @@ RCT_EXPORT_METHOD(discovery:(nonnull NSNumber *)connType
                   resolve:(RCTPromiseResolveBlock)resolve
                   reject:(RCTPromiseRejectBlock)reject)
 {
+    [_wifiManager closeUdpSocket];
+    if ([_wifiManager createUdpSocket]) {
+        [_wifiManager sendFindCmd:^(PrinterProfile *printer) {
+            NSLog(@"printer %@", printer);
+        }];
+    }
     resolve(@"NO");
 }
 
 RCT_EXPORT_METHOD(printerStatus:(RCTPromiseResolveBlock)resolve
                   reject:(RCTPromiseRejectBlock)reject)
 {
+    if ([_wifiManager printerIsConnect]) {
+        [_wifiManager printerStatus:^(NSData *responseData) {
+            if (responseData.length == 0) return;
+            if (responseData.length == 1) {
+                const Byte *byte = (Byte *)[responseData bytes];
+                unsigned status = byte[0];
+                
+                if (status == 0x12) {
+                    resolve(@"Ready");
+                } else if (status == 0x16) {
+                    resolve(@"Cover opened");
+                } else if (status == 0x32) {
+                    resolve(@"Paper end");
+                } else if (status == 0x36) {
+                    resolve(@"Cover opened & Paper end");
+                } else {
+                    resolve(@"error");
+                }
+            }
+        }];
+    }
     resolve(@"NO");
 }
 
 RCT_EXPORT_METHOD(isConnect:(RCTPromiseResolveBlock)resolve
                   reject:(RCTPromiseRejectBlock)reject)
 {
+    
     resolve(@"NO");
 }
 
@@ -116,7 +145,9 @@ RCT_EXPORT_METHOD(printBitmap:(NSString *)base64)
 
 RCT_EXPORT_METHOD(openCashBox)
 {
-   
+    NSMutableData *dataM = [NSMutableData dataWithData:[POSCommand initializePrinter]];
+    [dataM appendData:[POSCommand creatCashBoxContorPulseWithM:0 andT1:30 andT2:255]];
+    [_wifiManager writeCommandWithData:dataM];
 }
 
 
