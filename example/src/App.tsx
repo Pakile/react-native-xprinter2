@@ -1,7 +1,13 @@
 import * as React from 'react';
 import { useState } from 'react';
 
-import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import {
+  Platform,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from 'react-native';
 import {
   connect,
   discovery,
@@ -25,13 +31,23 @@ export default function App() {
       });
   };
   const handleConnect = () => {
-    connect(type, address)
-      .then((res) => {
-        console.log('connect', res);
-      })
-      .catch((er) => {
-        console.log('connect', er);
-      });
+    if (Platform.OS === 'ios') {
+      connect(1, '192.168.1.10')
+        .then((res) => {
+          setAddress('192.168.1.10');
+          console.log('connect', res);
+        })
+        .catch((er) => {
+          console.log('connect', er);
+        });
+    } else
+      connect(type, address)
+        .then((res) => {
+          console.log('connect', res);
+        })
+        .catch((er) => {
+          console.log('connect', er);
+        });
   };
   const handleStatus = () => {
     printerStatus()

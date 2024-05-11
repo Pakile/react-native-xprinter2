@@ -1,5 +1,8 @@
 #import "Xprinter2.h"
 #import "POSCommand.h"
+#import "POSWIFIManager.h"
+#import <UIKit/UIKit.h>
+
 
 @implementation Xprinter2{
     POSWIFIManager *_wifiManager;
@@ -21,7 +24,7 @@ RCT_EXPORT_MODULE()
 }
 
 
-RCT_EXPORT_METHOD(connect:(NSNumber *)connType address:(NSString *)address
+RCT_EXPORT_METHOD(connect:(nonnull NSNumber *)connType address:(NSString *)address
                   resolve:(RCTPromiseResolveBlock)resolve
                   reject:(RCTPromiseRejectBlock)reject)
 {
@@ -101,27 +104,29 @@ RCT_EXPORT_METHOD(printerStatus:(RCTPromiseResolveBlock)resolve
                   reject:(RCTPromiseRejectBlock)reject)
 {
     if ([_wifiManager printerIsConnect]) {
-        [_wifiManager printerStatus:^(NSData *responseData) {
-            if (responseData.length == 0) return;
-            if (responseData.length == 1) {
-                const Byte *byte = (Byte *)[responseData bytes];
-                unsigned status = byte[0];
+        [_wifiManager printerStatus:^(NSData *status) {
+            if (status.length == 0) {
+                resolve(@"NO");
+            } else if (status.length == 1) {
+                const Byte *byte = (Byte *)[status bytes];
+                unsigned arr = byte[0];
                 
-                if (status == 0x12) {
+                if (arr == 0x12) {
                     resolve(@"Ready");
-                } else if (status == 0x16) {
+                } else if (arr == 0x16) {
                     resolve(@"Cover opened");
-                } else if (status == 0x32) {
+                } else if (arr == 0x32) {
                     resolve(@"Paper end");
-                } else if (status == 0x36) {
+                } else if (arr == 0x36) {
                     resolve(@"Cover opened & Paper end");
                 } else {
                     resolve(@"error");
                 }
             }
         }];
+    } else {
+        resolve(@"NO");
     }
-    resolve(@"NO");
 }
 
 RCT_EXPORT_METHOD(isConnect:(RCTPromiseResolveBlock)resolve
@@ -138,9 +143,26 @@ RCT_EXPORT_METHOD(setIp:(NSString *)adress
     resolve(@"NO");
 }
 
+- (UIImage *)imageFromBase64String:(NSString *)base64String {
+    // Convert the base64 string to NSData
+    NSData *imageData = [[NSData alloc] initWithBase64EncodedString:base64String options:NSDataBase64DecodingIgnoreUnknownCharacters];
+    
+    // Create UIImage from NSData
+    UIImage *image = [UIImage imageWithData:imageData];
+    
+    return image;
+}
+
 RCT_EXPORT_METHOD(printBitmap:(NSString *)base64)
 {
-   
+    UIImage *img = [self imageFromBase64String:base64];
+    
+    NSMutableData *dataM = [NSMutableData dataWithData:[POSCommand initializePrinter]];
+    [dataM appendData:[POSCommand selectAlignment:1]];
+    [dataM appendData:[POSCommand printRasteBmpWithM:RasterNolmorWH andImage:img andType:Dithering]];
+    [dataM appendData:[POSCommand printAndFeedForwardWhitN:6]];
+    [dataM appendData:[POSCommand selectCutPageModelAndCutpage:1]];
+    [_wifiManager writeCommandWithData:dataM];
 }
 
 RCT_EXPORT_METHOD(openCashBox)
