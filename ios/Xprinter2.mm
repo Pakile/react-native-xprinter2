@@ -110,7 +110,7 @@ RCT_EXPORT_METHOD(printerStatus:(RCTPromiseResolveBlock)resolve
             } else if (status.length == 1) {
                 const Byte *byte = (Byte *)[status bytes];
                 unsigned arr = byte[0];
-                
+
                 if (arr == 0x12) {
                     resolve(@"Ready");
                 } else if (arr == 0x16) {
@@ -132,31 +132,34 @@ RCT_EXPORT_METHOD(printerStatus:(RCTPromiseResolveBlock)resolve
 RCT_EXPORT_METHOD(isConnect:(RCTPromiseResolveBlock)resolve
                   reject:(RCTPromiseRejectBlock)reject)
 {
-    
-    resolve(@"NO");
+   if ([_wifiManager printerIsConnect]) {
+           resolve(@(YES));
+       } else {
+           resolve(@(NO));
+       }
 }
 
-RCT_EXPORT_METHOD(setIp:(NSString *)adress 
+RCT_EXPORT_METHOD(setIp:(NSString *)adress
                   resolve:(RCTPromiseResolveBlock)resolve
                   reject:(RCTPromiseRejectBlock)reject)
 {
-    resolve(@"NO");
+    resolve(@(NO));
 }
 
 - (UIImage *)imageFromBase64String:(NSString *)base64String {
     // Convert the base64 string to NSData
     NSData *imageData = [[NSData alloc] initWithBase64EncodedString:base64String options:NSDataBase64DecodingIgnoreUnknownCharacters];
-    
+
     // Create UIImage from NSData
     UIImage *image = [UIImage imageWithData:imageData];
-    
+
     return image;
 }
 
 RCT_EXPORT_METHOD(printBitmap:(NSString *)base64)
 {
     UIImage *img = [self imageFromBase64String:base64];
-    
+
     NSMutableData *dataM = [NSMutableData dataWithData:[POSCommand initializePrinter]];
     [dataM appendData:[POSCommand selectAlignment:1]];
     [dataM appendData:[POSCommand printRasteBmpWithM:RasterNolmorWH andImage:img andType:Dithering]];
