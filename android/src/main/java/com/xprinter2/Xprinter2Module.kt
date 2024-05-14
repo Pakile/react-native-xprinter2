@@ -146,7 +146,7 @@ class Xprinter2Module(reactContext: ReactApplicationContext) :
         if (it == 0) {
           promise.resolve(true)
         } else {
-          promise.reject("STATUS", it.toString())
+           promise.resolve(false)
         }
       }
     } catch (e: Exception) {
