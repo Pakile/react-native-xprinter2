@@ -83,11 +83,20 @@ android {
     targetCompatibility JavaVersion.VERSION_1_8
   }
 
+  // Đảm bảo rằng chúng ta bao gồm các thư viện transitives từ file .aar
+  configurations.all {
+      transitive = true
+  }
+
 }
 
 repositories {
   mavenCentral()
   google()
+
+  flatDir {
+      dirs 'src/libs' // Thư mục chứa file .aar của bạn
+  }
 }
 
 def kotlin_version = getExtOrDefault("kotlinVersion")
@@ -98,7 +107,7 @@ dependencies {
   //noinspection GradleDynamicVersion
   implementation "com.facebook.react:react-native:+"
   implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
-  implementation files('src/libs/printer-lib-3.1.6.aar')
+  implementation(name: 'printer-lib-3.1.6', ext: 'aar')
 }
 
 if (isNewArchitectureEnabled()) {
