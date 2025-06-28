@@ -1,15 +1,17 @@
 # React Native XPrinter2
 
-A React Native library for XPrinter thermal printers with comprehensive support for both POS receipt printing and Label printing.
+A React Native library for XPrinter thermal printers with comprehensive support for both POS receipt printing and Label
+printing.
 
 ## Features
 
 ### POS Receipt Printing
+
 - 🖨️ Support for XPrinter thermal printers
 - 📱 Cross-platform (iOS & Android)
 - 🔌 Multiple connection types:
   - USB connection
-  - WiFi/Network connection  
+  - WiFi/Network connection
   - Bluetooth connection (Android)
 - 🖼️ Print bitmap images (base64)
 - 💰 Cash drawer control
@@ -17,6 +19,7 @@ A React Native library for XPrinter thermal printers with comprehensive support 
 - 🌐 Network printer discovery
 
 ### Label Printing (NEW!)
+
 - ✅ **TSC/TSPL Commands** - Full support for TSC label printers
 - ✅ **ZPL Commands** - Complete Zebra Programming Language support
 - ✅ **CPCL Commands** - Intermec/Honeywell Common Printer Control Language
@@ -66,6 +69,7 @@ For Android, the library includes the necessary printer SDK and should work out 
 import {
   discovery,
   connect,
+  disconnect,
   printBitmap,
   openCashBox,
   printerStatus,
@@ -94,6 +98,17 @@ const connectToPrinter = async (connectionType, address) => {
     return result;
   } catch (error) {
     console.error('Connection failed:', error);
+  }
+};
+
+// Disconnect from printer
+const disconnectFromPrinter = async () => {
+  try {
+    const result = await disconnect();
+    console.log('Disconnected:', result);
+    return result;
+  } catch (error) {
+    console.error('Disconnect failed:', error);
   }
 };
 
@@ -291,33 +306,35 @@ await printLabelImage(base64ImageString, LabelPrintType.CPCL);
 
 ### Connection Functions
 
-| Function | Description | Parameters | Returns |
-|----------|-------------|------------|---------|
-| `discovery()` | Discover available printers | `connType: ConnectionType` | `Promise<string>` |
-| `connect()` | Connect to printer | `connType: ConnectionType, address: string` | `Promise<boolean>` |
-| `isConnect()` | Check connection status | - | `Promise<boolean>` |
-| `printerStatus()` | Get printer status | - | `Promise<number>` |
-| `setIp()` | Set printer IP (WiFi only) | `address: string` | `Promise<boolean>` |
+| Function          | Description                 | Parameters                                  | Returns            |
+|-------------------|-----------------------------|---------------------------------------------|--------------------|
+| `discovery()`     | Discover available printers | `connType: ConnectionType`                  | `Promise<string>`  |
+| `connect()`       | Connect to printer          | `connType: ConnectionType, address: string` | `Promise<boolean>` |
+| `disconnect()`    | Disconnect from printer     | -                                           | `Promise<boolean>` |
+| `isConnect()`     | Check connection status     | -                                           | `Promise<boolean>` |
+| `printerStatus()` | Get printer status          | -                                           | `Promise<number>`  |
+| `setIp()`         | Set printer IP (WiFi only)  | `address: string`                           | `Promise<boolean>` |
 
 ### POS Printing Functions
 
-| Function | Description | Parameters | Returns |
-|----------|-------------|------------|---------|
+| Function        | Description        | Parameters       | Returns         |
+|-----------------|--------------------|------------------|-----------------|
 | `printBitmap()` | Print bitmap image | `base64: string` | `Promise<void>` |
-| `openCashBox()` | Open cash drawer | - | `Promise<void>` |
+| `openCashBox()` | Open cash drawer   | -                | `Promise<void>` |
 
 ### Label Printing Functions
 
-| Function | Description | Parameters | Returns |
-|----------|-------------|------------|---------|
-| `printTSCLabel()` | Print TSC/TSPL label | `options: TSCLabelOptions` | `Promise<boolean>` |
-| `printZPLLabel()` | Print ZPL label | `options: ZPLLabelOptions` | `Promise<boolean>` |
-| `printCPCLLabel()` | Print CPCL label | `options: CPCLLabelOptions` | `Promise<boolean>` |
+| Function            | Description          | Parameters                                  | Returns            |
+|---------------------|----------------------|---------------------------------------------|--------------------|
+| `printTSCLabel()`   | Print TSC/TSPL label | `options: TSCLabelOptions`                  | `Promise<boolean>` |
+| `printZPLLabel()`   | Print ZPL label      | `options: ZPLLabelOptions`                  | `Promise<boolean>` |
+| `printCPCLLabel()`  | Print CPCL label     | `options: CPCLLabelOptions`                 | `Promise<boolean>` |
 | `printLabelImage()` | Print image as label | `base64: string, printType: LabelPrintType` | `Promise<boolean>` |
 
 ### Types and Enums
 
 #### Connection Types
+
 ```javascript
 enum ConnectionType {
   USB = 0,
@@ -327,6 +344,7 @@ enum ConnectionType {
 ```
 
 #### Label Print Types
+
 ```javascript
 enum LabelPrintType {
   TSPL = 0,  // TSC Printer Language
@@ -336,6 +354,7 @@ enum LabelPrintType {
 ```
 
 #### Font Types
+
 ```javascript
 // ZPL Fonts
 enum ZPLFont {
@@ -355,6 +374,7 @@ enum CPCLFont {
 ```
 
 #### Barcode Types
+
 ```javascript
 // ZPL Barcodes
 enum ZPLBarCode {
@@ -374,6 +394,7 @@ enum CPCLBarCode {
 ```
 
 #### Rotation
+
 ```javascript
 enum Rotation {
   ROTATION_0 = 0,
@@ -386,6 +407,7 @@ enum Rotation {
 ### Label Options
 
 #### TSCLabelOptions
+
 ```javascript
 interface TSCLabelOptions {
   width?: number;        // Label width in mm
@@ -401,6 +423,7 @@ interface TSCLabelOptions {
 ```
 
 #### Element Interfaces
+
 ```javascript
 interface LabelTextElement {
   x: number;             // X coordinate
@@ -440,24 +463,26 @@ interface LabelQRCodeElement {
 
 ## Printer Status Codes
 
-| Code | Status |
-|------|--------|
-| 18 (0x12) | Ready |
-| 22 (0x16) | Cover opened |
-| 50 (0x32) | Paper end |
+| Code      | Status                   |
+|-----------|--------------------------|
+| 18 (0x12) | Ready                    |
+| 22 (0x16) | Cover opened             |
+| 50 (0x32) | Paper end                |
 | 54 (0x36) | Cover opened & Paper end |
-| -1 | No response |
-| -2 | Invalid response |
+| -1        | No response              |
+| -2        | Invalid response         |
 
 ## Supported Printers
 
 ### POS Printers
+
 - XP-58IIH, XP-58IIL, XP-58IIIK
 - XP-80IIH, XP-80IIL, XP-80IIIK
 - XP-N160I, XP-N160II
 - And other XPrinter POS models
 
 ### Label Printers
+
 - **TSC Compatible**: XP-DT108B, XP-DT426B, XP-460B
 - **ZPL Compatible**: Zebra-compatible XPrinter models
 - **CPCL Compatible**: Intermec/Honeywell compatible models
@@ -465,6 +490,7 @@ interface LabelQRCodeElement {
 ## Example App
 
 See the [example](./example) directory for a complete implementation with:
+
 - Connection management
 - POS receipt printing
 - Label printing with all formats

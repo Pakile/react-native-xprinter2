@@ -668,4 +668,46 @@ RCT_EXPORT_METHOD(printLabelImage:(NSString *)base64
     }
 }
 
+RCT_EXPORT_METHOD(disconnect:(RCTPromiseResolveBlock)resolve
+                  reject:(RCTPromiseRejectBlock)reject)
+{
+    BOOL disconnected = NO;
+    
+    switch (_currentConnectionType) {
+        case 1: { // WiFi
+            if ([_wifiManager printerIsConnect]) {
+                [_wifiManager disconnect];
+                disconnected = YES;
+            }
+            if (_tscWifiManager.isConnect) {
+                [_tscWifiManager disconnect];
+                disconnected = YES;
+            }
+            break;
+        }
+        case 2: { // Bluetooth
+            if ([_bleManager printerIsConnect]) {
+                [_bleManager disconnectRootPeripheral];
+                disconnected = YES;
+            }
+            if (_tscBleManager.isConnecting) {
+                [_tscBleManager disconnectRootPeripheral];
+                disconnected = YES;
+            }
+            break;
+        }
+        default: {
+            reject(@"NOT_CONNECTED", @"No active connection to disconnect", nil);
+            return;
+        }
+    }
+    
+    if (disconnected) {
+        _currentConnectionType = -1;
+        resolve(@(YES));
+    } else {
+        reject(@"NOT_CONNECTED", @"No active connection to disconnect", nil);
+    }
+}
+
 @end

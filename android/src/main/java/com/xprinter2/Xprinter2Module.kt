@@ -95,6 +95,18 @@ class Xprinter2Module(reactContext: ReactApplicationContext) :
   }
 
   @ReactMethod
+  fun disconnect(promise: Promise) {
+    try {
+      curConnect?.close()
+      curConnect = null
+      promise.resolve(true)
+    } catch (e: Exception) {
+      e.printStackTrace()
+      promise.reject("DISCONNECT_ERROR", e.message)
+    }
+  }
+
+  @ReactMethod
   fun printBitmap(base64: String) {
     val bitmap = ImageUtils().base64ToBitmap(base64)
     if (bitmap != null) {

@@ -194,6 +194,14 @@ export function connect(connType: ConnectionTypeValue, address: string): Promise
 }
 
 /**
+ * Disconnect from the current printer
+ * @returns Promise that resolves to disconnection success status
+ */
+export function disconnect(): Promise<boolean> {
+  return Xprinter2.disconnect();
+}
+
+/**
  * Print a bitmap image
  * @param base64 Base64 encoded image data
  * @returns Promise that resolves when print is complete
