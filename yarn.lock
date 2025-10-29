@@ -9886,6 +9886,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"moment@npm:^2.29.4":
+  version: 2.30.1
+  resolution: "moment@npm:2.30.1"
+  checksum: 859236bab1e88c3e5802afcf797fc801acdbd0ee509d34ea3df6eea21eb6bcc2abd4ae4e4e64aa7c986aa6cba563c6e62806218e6412a765010712e5fa121ba6
+  languageName: node
+  linkType: hard
+
 "ms@npm:2.0.0":
   version: 2.0.0
   resolution: "ms@npm:2.0.0"
@@ -11071,6 +11078,7 @@ __metadata:
     "@react-native/typescript-config": 0.74.81
     babel-plugin-module-resolver: ^5.0.0
     metro-react-native-babel-preset: ^0.77.0
+    moment: ^2.29.4
     react: 18.2.0
     react-native: 0.74.0
   languageName: unknown
