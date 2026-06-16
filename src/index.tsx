@@ -1,23 +1,5 @@
-import { NativeModules, Platform } from 'react-native';
+import NativeXprinter2 from './NativeXprinter2';
 
-const LINKING_ERROR =
-  `The package 'react-native-xprinter2' doesn't seem to be linked. Make sure: \n\n` +
-  Platform.select({ ios: "- You have run 'pod install'\n", default: '' }) +
-  '- You rebuilt the app after installing the package\n' +
-  '- You are not using Expo Go\n';
-
-const Xprinter2 = NativeModules.Xprinter2
-  ? NativeModules.Xprinter2
-  : new Proxy(
-      {},
-      {
-        get() {
-          throw new Error(LINKING_ERROR);
-        },
-      }
-    );
-
-// Connection type constants
 export const ConnectionType = {
   USB: 0,
   WIFI: 1,
@@ -26,7 +8,6 @@ export const ConnectionType = {
 
 export type ConnectionTypeValue = typeof ConnectionType[keyof typeof ConnectionType];
 
-// Label Print Types
 export const LabelPrintType = {
   TSPL: 0,
   ZPL: 1,
@@ -35,7 +16,6 @@ export const LabelPrintType = {
 
 export type LabelPrintTypeValue = typeof LabelPrintType[keyof typeof LabelPrintType];
 
-// ZPL Font Types
 export enum ZPLFont {
   FNT_9_5 = 0,
   FNT_11_7 = 1,
@@ -55,7 +35,6 @@ export enum ZPLFont {
   FNT_15_12 = 15,
 }
 
-// ZPL Barcode Types
 export enum ZPLBarCode {
   CODE_TYPE_11 = 0,
   CODE_TYPE_25 = 1,
@@ -72,7 +51,6 @@ export enum ZPLBarCode {
   CODE_TYPE_UPCA = 12,
 }
 
-// CPCL Font Types
 export enum CPCLFont {
   FNT_0 = 0,
   FNT_1 = 1,
@@ -86,7 +64,6 @@ export enum CPCLFont {
   FNT_55 = 55,
 }
 
-// CPCL Barcode Types
 export enum CPCLBarCode {
   BC_128 = 0,
   BC_UPCA = 1,
@@ -98,7 +75,6 @@ export enum CPCLBarCode {
   BC_CODABAR = 7,
 }
 
-// Rotation Types
 export enum Rotation {
   ROTATION_0 = 0,
   ROTATION_90 = 1,
@@ -106,7 +82,6 @@ export enum Rotation {
   ROTATION_270 = 3,
 }
 
-// Label Element Interfaces
 export interface LabelTextElement {
   x: number;
   y: number;
@@ -142,13 +117,12 @@ export interface LabelQRCodeElement {
   factor?: number;
 }
 
-// Label Options Interfaces
 export interface TSCLabelOptions {
-  width?: number; // mm
-  height?: number; // mm
-  gap?: number; // mm
-  density?: number; // 0-15
-  speed?: number; // inches per second
+  width?: number;
+  height?: number;
+  gap?: number;
+  density?: number;
+  speed?: number;
   copies?: number;
   texts?: LabelTextElement[];
   barcodes?: LabelBarcodeElement[];
@@ -156,10 +130,10 @@ export interface TSCLabelOptions {
 }
 
 export interface ZPLLabelOptions {
-  width?: number; // dots
-  height?: number; // dots
-  density?: number; // 0-30
-  speed?: number; // 1-14
+  width?: number;
+  height?: number;
+  density?: number;
+  speed?: number;
   copies?: number;
   texts?: LabelTextElement[];
   barcodes?: LabelBarcodeElement[];
@@ -167,130 +141,60 @@ export interface ZPLLabelOptions {
 }
 
 export interface CPCLLabelOptions {
-  height?: number; // dots
+  height?: number;
   copies?: number;
   texts?: LabelTextElement[];
   barcodes?: LabelBarcodeElement[];
   qrcodes?: LabelQRCodeElement[];
 }
 
-/**
- * Discover available printers
- * @param connType Connection type (0 = USB, 1 = WiFi, 2 = Bluetooth)
- * @returns Promise that resolves to printer address/name
- */
 export function discovery(connType: ConnectionTypeValue): Promise<string> {
-  return Xprinter2.discovery(connType);
+  return NativeXprinter2.discovery(connType);
 }
 
-/**
- * Connect to a specific printer
- * @param connType Connection type (0 = USB, 1 = WiFi, 2 = Bluetooth)
- * @param address Printer address (IP address for WiFi, device name for others)
- * @returns Promise that resolves to connection success status
- */
 export function connect(connType: ConnectionTypeValue, address: string): Promise<boolean> {
-  return Xprinter2.connect(connType, address);
+  return NativeXprinter2.connect(connType, address);
 }
 
-/**
- * Disconnect from the current printer
- * @returns Promise that resolves to disconnection success status
- */
 export function disconnect(): Promise<boolean> {
-  return Xprinter2.disconnect();
+  return NativeXprinter2.disconnect();
 }
 
-/**
- * Print a bitmap image
- * @param base64 Base64 encoded image data
- * @returns Promise that resolves when print is complete
- */
 export function printBitmap(base64: string): Promise<void> {
-  return Xprinter2.printBitmap(base64);
+  return NativeXprinter2.printBitmap(base64);
 }
 
-/**
- * Open the connected cash drawer
- * @returns Promise that resolves when command is sent
- */
 export function openCashBox(): Promise<void> {
-  return Xprinter2.openCashBox();
+  return NativeXprinter2.openCashBox();
 }
 
-/**
- * Get current printer status
- * @returns Promise that resolves to status code
- * Status codes:
- * - 0x12 (18): Ready
- * - 0x16 (22): Cover opened
- * - 0x32 (50): Paper end
- * - 0x36 (54): Cover opened & Paper end
- * - -1: No response
- * - -2: Invalid response
- */
 export function printerStatus(): Promise<number> {
-  return Xprinter2.printerStatus();
+  return NativeXprinter2.printerStatus();
 }
 
-/**
- * Check if printer is currently connected
- * @returns Promise that resolves to connection status
- */
 export function isConnect(): Promise<boolean> {
-  return Xprinter2.isConnect();
+  return NativeXprinter2.isConnect();
 }
 
-/**
- * Set printer IP address (WiFi only)
- * @param address IP address string
- * @returns Promise that resolves to success status
- */
 export function setIp(address: string): Promise<boolean> {
-  return Xprinter2.setIp(address);
+  return NativeXprinter2.setIp(address);
 }
 
-// MARK: - Label Printing Functions
-
-/**
- * Print a TSC/TSPL format label
- * @param options TSC label configuration options
- * @returns Promise that resolves when print is complete
- */
 export function printTSCLabel(options: TSCLabelOptions): Promise<boolean> {
-  return Xprinter2.printTSCLabel(options);
+  return NativeXprinter2.printTSCLabel(options as Object);
 }
 
-/**
- * Print a ZPL format label
- * @param options ZPL label configuration options
- * @returns Promise that resolves when print is complete
- */
 export function printZPLLabel(options: ZPLLabelOptions): Promise<boolean> {
-  return Xprinter2.printZPLLabel(options);
+  return NativeXprinter2.printZPLLabel(options as Object);
 }
 
-/**
- * Print a CPCL format label
- * @param options CPCL label configuration options
- * @returns Promise that resolves when print is complete
- */
 export function printCPCLLabel(options: CPCLLabelOptions): Promise<boolean> {
-  return Xprinter2.printCPCLLabel(options);
+  return NativeXprinter2.printCPCLLabel(options as Object);
 }
 
-/**
- * Print an image as a label using specified print type
- * @param base64 Base64 encoded image data
- * @param printType Label print type (0 = TSPL, 1 = ZPL, 2 = CPCL)
- * @returns Promise that resolves when print is complete
- */
 export function printLabelImage(base64: string, printType: LabelPrintTypeValue): Promise<boolean> {
-  return Xprinter2.printLabelImage(base64, printType);
+  return NativeXprinter2.printLabelImage(base64, printType);
 }
 
-// Export connection type constants for convenience
 export { ConnectionType as CON_TYPE };
-
-// Export label printing constants
 export { LabelPrintType as LABEL_TYPE };

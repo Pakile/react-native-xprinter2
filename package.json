@@ -147,6 +147,14 @@
     "trailingComma": "es5",
     "useTabs": false
   },
+  "codegenConfig": {
+    "name": "RNXprinter2Spec",
+    "type": "modules",
+    "jsSrcsDir": "src",
+    "android": {
+      "javaPackageName": "com.xprinter2"
+    }
+  },
   "react-native-builder-bob": {
     "source": "src",
     "output": "lib",
