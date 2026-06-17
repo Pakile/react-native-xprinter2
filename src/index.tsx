@@ -6,7 +6,8 @@ export const ConnectionType = {
   BLUETOOTH: 2,
 } as const;
 
-export type ConnectionTypeValue = typeof ConnectionType[keyof typeof ConnectionType];
+export type ConnectionTypeValue =
+  (typeof ConnectionType)[keyof typeof ConnectionType];
 
 export const LabelPrintType = {
   TSPL: 0,
@@ -14,7 +15,8 @@ export const LabelPrintType = {
   CPCL: 2,
 } as const;
 
-export type LabelPrintTypeValue = typeof LabelPrintType[keyof typeof LabelPrintType];
+export type LabelPrintTypeValue =
+  (typeof LabelPrintType)[keyof typeof LabelPrintType];
 
 export enum ZPLFont {
   FNT_9_5 = 0,
@@ -152,7 +154,10 @@ export function discovery(connType: ConnectionTypeValue): Promise<string> {
   return NativeXprinter2.discovery(connType);
 }
 
-export function connect(connType: ConnectionTypeValue, address: string): Promise<boolean> {
+export function connect(
+  connType: ConnectionTypeValue,
+  address: string
+): Promise<boolean> {
   return NativeXprinter2.connect(connType, address);
 }
 
@@ -192,7 +197,10 @@ export function printCPCLLabel(options: CPCLLabelOptions): Promise<boolean> {
   return NativeXprinter2.printCPCLLabel(options as Object);
 }
 
-export function printLabelImage(base64: string, printType: LabelPrintTypeValue): Promise<boolean> {
+export function printLabelImage(
+  base64: string,
+  printType: LabelPrintTypeValue
+): Promise<boolean> {
   return NativeXprinter2.printLabelImage(base64, printType);
 }
 

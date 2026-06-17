@@ -55,7 +55,7 @@ RCT_EXPORT_MODULE()
         case 0:
             reject(@"UNSUPPORTED", @"USB discovery is not supported on iOS", nil);
             break;
-        case 1:
+        case 1: {
             [_wifiManager closeUdpSocket];
             if ([_wifiManager createUdpSocket]) {
                 [_wifiManager sendFindCmd:^(PrinterProfile *printer) {
@@ -76,7 +76,8 @@ RCT_EXPORT_MODULE()
                 reject(@"UDP_ERROR", @"Failed to create UDP socket", nil);
             }
             break;
-        case 2:
+        }
+        case 2: {
             [_discoveredPrinters removeAllObjects];
             [_bleManager startScan];
             dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(10.0 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
@@ -88,6 +89,7 @@ RCT_EXPORT_MODULE()
                 }
             });
             break;
+        }
         default:
             reject(@"INVALID_TYPE", @"Invalid connection type", nil);
             break;
