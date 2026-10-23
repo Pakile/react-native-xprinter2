@@ -99,6 +99,15 @@ repositories {
   }
 }
 
+// The app project resolves this module's dependencies too, so it needs the
+// same flatDir (a local .aar can't be referenced by path from a library)
+def printerLibsDir = file('src/libs')
+rootProject.allprojects {
+  repositories {
+    flatDir { dirs printerLibsDir }
+  }
+}
+
 def kotlin_version = getExtOrDefault("kotlinVersion")
 
 dependencies {

@@ -24,7 +24,8 @@ export const ConnectionType = {
   BLUETOOTH: 2,
 } as const;
 
-export type ConnectionTypeValue = typeof ConnectionType[keyof typeof ConnectionType];
+export type ConnectionTypeValue =
+  (typeof ConnectionType)[keyof typeof ConnectionType];
 
 // Label Print Types
 export const LabelPrintType = {
@@ -33,7 +34,8 @@ export const LabelPrintType = {
   CPCL: 2,
 } as const;
 
-export type LabelPrintTypeValue = typeof LabelPrintType[keyof typeof LabelPrintType];
+export type LabelPrintTypeValue =
+  (typeof LabelPrintType)[keyof typeof LabelPrintType];
 
 // ZPL Font Types
 export enum ZPLFont {
@@ -189,7 +191,10 @@ export function discovery(connType: ConnectionTypeValue): Promise<string> {
  * @param address Printer address (IP address for WiFi, device name for others)
  * @returns Promise that resolves to connection success status
  */
-export function connect(connType: ConnectionTypeValue, address: string): Promise<boolean> {
+export function connect(
+  connType: ConnectionTypeValue,
+  address: string
+): Promise<boolean> {
   return Xprinter2.connect(connType, address);
 }
 
@@ -250,6 +255,58 @@ export function setIp(address: string): Promise<boolean> {
   return Xprinter2.setIp(address);
 }
 
+/**
+ * Send raw bytes to the connected printer (Android)
+ * @param base64 Base64 encoded bytes
+ */
+export function printRawData(base64: string): Promise<boolean> {
+  return Xprinter2.printRawData(base64);
+}
+
+/** WiFi security of the printer's network, for wifiConfig */
+export const WifiKeyType = {
+  NONE: 0,
+  WEP64: 1,
+  WEP128: 2,
+  WPA_AES_PSK: 3,
+  WPA_TKIP_PSK: 4,
+  WPA_TKIP_AES_PSK: 5,
+  WPA2_AES_PSK: 6,
+  WPA2_TKIP: 7,
+  WPA2_TKIP_AES_PSK: 8,
+  WPA_WPA2_MIXED: 9,
+} as const;
+
+export interface WifiConfigOptions {
+  ip: string;
+  mask: string;
+  gateway: string;
+  ssid: string;
+  password: string;
+  keyType?: number;
+}
+
+/**
+ * Set the printer's WiFi network and static IP (Android, printer connected
+ * over USB: printers ignore it over the network). The printer applies it
+ * after a restart.
+ */
+export function wifiConfig(options: WifiConfigOptions): Promise<boolean> {
+  if (Platform.OS !== 'android') {
+    return Promise.reject(
+      new Error('wifiConfig is only available on Android (USB)')
+    );
+  }
+  return Xprinter2.wifiConfig(
+    options.ip,
+    options.mask,
+    options.gateway,
+    options.ssid,
+    options.password,
+    options.keyType ?? WifiKeyType.WPA2_AES_PSK
+  );
+}
+
 // MARK: - Label Printing Functions
 
 /**
@@ -285,7 +342,10 @@ export function printCPCLLabel(options: CPCLLabelOptions): Promise<boolean> {
  * @param printType Label print type (0 = TSPL, 1 = ZPL, 2 = CPCL)
  * @returns Promise that resolves when print is complete
  */
-export function printLabelImage(base64: string, printType: LabelPrintTypeValue): Promise<boolean> {
+export function printLabelImage(
+  base64: string,
+  printType: LabelPrintTypeValue
+): Promise<boolean> {
   return Xprinter2.printLabelImage(base64, printType);
 }
 

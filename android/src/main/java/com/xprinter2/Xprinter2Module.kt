@@ -2,6 +2,13 @@ package com.xprinter2
 
 
 import android.Manifest
+import android.app.PendingIntent
+import android.content.BroadcastReceiver
+import android.content.Intent
+import android.content.IntentFilter
+import android.hardware.usb.UsbDevice
+import android.hardware.usb.UsbManager
+import android.util.Base64
 import android.bluetooth.BluetoothAdapter
 import android.bluetooth.BluetoothDevice
 import android.bluetooth.BluetoothManager
@@ -15,6 +22,7 @@ import com.facebook.react.bridge.Promise
 import com.facebook.react.bridge.ReactApplicationContext
 import com.facebook.react.bridge.ReactContextBaseJavaModule
 import com.facebook.react.bridge.ReactMethod
+import com.facebook.react.bridge.ReadableMap
 import com.xprinter2.utils.ImageUtils
 import com.xprinter2.utils.MapUtil
 import kotlinx.coroutines.delay
@@ -24,6 +32,7 @@ import net.posprinter.IDeviceConnection
 import net.posprinter.POSConnect
 import net.posprinter.POSConst
 import net.posprinter.POSPrinter
+import net.posprinter.TSPLPrinter
 import net.posprinter.esc.PosUdpNet
 import java.net.InetAddress
 
@@ -35,6 +44,7 @@ data class Bean(
 )
 
 private const val TAG: String = "Xprinter"
+private const val ACTION_USB_PERMISSION = "com.xprinter2.USB_PERMISSION"
 
 
 class Xprinter2Module(reactContext: ReactApplicationContext) :
@@ -182,6 +192,101 @@ class Xprinter2Module(reactContext: ReactApplicationContext) :
   }
 
 
+
+  // Raw bytes (base64) straight to the connected printer
+  @ReactMethod
+  fun printRawData(base64: String, promise: Promise) {
+    try {
+      val connection = curConnect ?: return promise.reject("NOT_CONNECTED", "Printer is not connected")
+      connection.sendData(Base64.decode(base64, Base64.DEFAULT))
+      promise.resolve(true)
+    } catch (e: Exception) {
+      e.printStackTrace()
+      promise.reject("PRINT_ERROR", e.message)
+    }
+  }
+
+  // TSPL label; same options as the iOS printTSCLabel (size, gap, density,
+  // speed, copies, texts, barcodes, qrcodes)
+  @ReactMethod
+  fun printTSCLabel(options: ReadableMap, promise: Promise) {
+    try {
+      val connection = curConnect ?: return promise.reject("NOT_CONNECTED", "Printer is not connected")
+      fun num(map: ReadableMap, key: String, default: Double) =
+        if (map.hasKey(key) && !map.isNull(key)) map.getDouble(key).takeIf { it != 0.0 } ?: default else default
+      fun str(map: ReadableMap, key: String, default: String) =
+        if (map.hasKey(key) && !map.isNull(key)) {
+          if (map.getType(key).name == "Number") map.getDouble(key).toInt().toString() else map.getString(key) ?: default
+        } else default
+
+      val printer = TSPLPrinter(connection)
+        .sizeMm(num(options, "width", 40.0), num(options, "height", 30.0))
+        .gapMm(num(options, "gap", 2.0), 0.0)
+        .density(num(options, "density", 8.0).toInt())
+        .speed(num(options, "speed", 4.0))
+        .direction(0)
+        .cls()
+
+      options.getArray("texts")?.let { texts ->
+        for (i in 0 until texts.size()) {
+          val t = texts.getMap(i) ?: continue
+          printer.text(
+            num(t, "x", 0.0).toInt(), num(t, "y", 0.0).toInt(), str(t, "font", "3"),
+            num(t, "rotation", 0.0).toInt(), num(t, "xMul", 1.0).toInt(), num(t, "yMul", 1.0).toInt(),
+            str(t, "content", "")
+          )
+        }
+      }
+      options.getArray("barcodes")?.let { barcodes ->
+        for (i in 0 until barcodes.size()) {
+          val b = barcodes.getMap(i) ?: continue
+          printer.barcode(
+            num(b, "x", 0.0).toInt(), num(b, "y", 0.0).toInt(), str(b, "codeType", "128"),
+            num(b, "height", 100.0).toInt(), num(b, "readable", 1.0).toInt(), num(b, "rotation", 0.0).toInt(),
+            num(b, "narrow", 2.0).toInt(), num(b, "wide", 2.0).toInt(), str(b, "content", "")
+          )
+        }
+      }
+      options.getArray("qrcodes")?.let { qrcodes ->
+        for (i in 0 until qrcodes.size()) {
+          val q = qrcodes.getMap(i) ?: continue
+          printer.qrcode(
+            num(q, "x", 0.0).toInt(), num(q, "y", 0.0).toInt(), str(q, "eccLevel", "M"),
+            num(q, "cellWidth", 4.0).toInt(), str(q, "mode", "A"), num(q, "rotation", 0.0).toInt(),
+            str(q, "content", "")
+          )
+        }
+      }
+      printer.print(num(options, "copies", 1.0).toInt())
+      promise.resolve(true)
+    } catch (e: Exception) {
+      e.printStackTrace()
+      promise.reject("TSC_PRINT_ERROR", e.message)
+    }
+  }
+
+  // WiFi + static IP of the printer (vendor "set all network options"
+  // command); printers only accept it over USB
+  @ReactMethod
+  fun wifiConfig(
+    ip: String, mask: String, gateway: String, ssid: String, password: String, keyType: Int,
+    promise: Promise
+  ) {
+    try {
+      val connection = curConnect ?: return promise.reject("NOT_CONNECTED", "Printer is not connected")
+      POSPrinter(connection).wifiConfig(
+        InetAddress.getByName(ip).address,
+        InetAddress.getByName(mask).address,
+        InetAddress.getByName(gateway).address,
+        ssid, password, keyType.toByte()
+      )
+      promise.resolve(true)
+    } catch (e: Exception) {
+      e.printStackTrace()
+      promise.reject("WIFI_CONFIG_ERROR", e.message)
+    }
+  }
+
   private fun searchUsb(promise: Promise) {
     try {
       val usbNames = POSConnect.getUsbDevices(reactApplicationContext)
@@ -276,13 +381,44 @@ class Xprinter2Module(reactContext: ReactApplicationContext) :
     }
   }
 
-  //USB connection
+  //USB connection; the SDK doesn't ask for the USB permission, so ask first
   private fun connectUSB(pathName: String) {
-    if (pathName != "") {
-      curConnect?.close()
-      curConnect = POSConnect.createDevice(POSConnect.DEVICE_TYPE_USB)
-      curConnect!!.connect(pathName, connectListener)
+    if (pathName == "") {
+      promiseConnect?.resolve(false)
+      return
     }
+    val usbManager = reactApplicationContext.getSystemService(Context.USB_SERVICE) as UsbManager
+    val device: UsbDevice? = usbManager.deviceList[pathName]
+    if (device == null || usbManager.hasPermission(device)) {
+      openUSB(pathName)
+      return
+    }
+    val receiver = object : BroadcastReceiver() {
+      override fun onReceive(context: Context, intent: Intent) {
+        if (intent.action != ACTION_USB_PERMISSION) return
+        reactApplicationContext.unregisterReceiver(this)
+        if (intent.getBooleanExtra(UsbManager.EXTRA_PERMISSION_GRANTED, false)) {
+          openUSB(pathName)
+        } else {
+          promiseConnect?.resolve(false)
+        }
+      }
+    }
+    val filter = IntentFilter(ACTION_USB_PERMISSION)
+    if (Build.VERSION.SDK_INT >= 33) {
+      reactApplicationContext.registerReceiver(receiver, filter, Context.RECEIVER_NOT_EXPORTED)
+    } else {
+      reactApplicationContext.registerReceiver(receiver, filter)
+    }
+    val flags = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) PendingIntent.FLAG_MUTABLE else 0
+    val intent = Intent(ACTION_USB_PERMISSION).setPackage(reactApplicationContext.packageName)
+    usbManager.requestPermission(device, PendingIntent.getBroadcast(reactApplicationContext, 0, intent, flags))
+  }
+
+  private fun openUSB(pathName: String) {
+    curConnect?.close()
+    curConnect = POSConnect.createDevice(POSConnect.DEVICE_TYPE_USB)
+    curConnect!!.connect(pathName, connectListener)
   }
 
 
