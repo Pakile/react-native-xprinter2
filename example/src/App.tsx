@@ -2,7 +2,6 @@ import * as React from 'react';
 import { useState } from 'react';
 
 import {
-  Platform,
   StyleSheet,
   Text,
   TouchableOpacity,
@@ -16,14 +15,12 @@ import {
 import {
   connect,
   discovery,
-  printBitmap,
   printerStatus,
   isConnect,
   printTSCLabel,
   printZPLLabel,
   printCPCLLabel,
   printLabelImage,
-  ConnectionType,
   LabelPrintType,
   ZPLFont,
   ZPLBarCode,
@@ -39,7 +36,7 @@ import type {
 
 export default function App() {
   const [address, setAddress] = useState('192.168.1.199');
-  const [connectionType, setConnectionType] = useState<0 | 1>(1);
+  const [connectionType] = useState<0 | 1>(1);
   const [isConnected, setIsConnected] = useState(false);
   const [printerStatusText, setPrinterStatusText] = useState('');
   const [isLoading, setIsLoading] = useState(false);
@@ -62,8 +59,10 @@ export default function App() {
   const handleConnect = async () => {
     setIsLoading(true);
     try {
-      console.log(`Attempting to connect to ${address} with type ${connectionType}`);
-      
+      console.log(
+        `Attempting to connect to ${address} with type ${connectionType}`
+      );
+
       const result = await connect(connectionType, address);
       if (result) {
         setIsConnected(true);
@@ -74,15 +73,15 @@ export default function App() {
     } catch (error) {
       console.log('connect error', error);
       const errorMessage = (error as Error).message;
-      
+
       if (errorMessage.includes('timed out')) {
         Alert.alert(
-          'Connection Timeout', 
+          'Connection Timeout',
           `Không thể kết nối đến ${address}. Vui lòng kiểm tra:\n\n` +
-          '• Địa chỉ IP có đúng không\n' +
-          '• Máy in có bật và kết nối mạng không\n' +
-          '• Thiết bị và máy in có cùng mạng WiFi không\n' +
-          '• Firewall có chặn kết nối không'
+            '• Địa chỉ IP có đúng không\n' +
+            '• Máy in có bật và kết nối mạng không\n' +
+            '• Thiết bị và máy in có cùng mạng WiFi không\n' +
+            '• Firewall có chặn kết nối không'
         );
       } else {
         Alert.alert('Connection Error', errorMessage);
@@ -112,7 +111,10 @@ export default function App() {
     try {
       const connected = await isConnect();
       setIsConnected(connected);
-      Alert.alert('Connection Status', connected ? 'Connected' : 'Disconnected');
+      Alert.alert(
+        'Connection Status',
+        connected ? 'Connected' : 'Disconnected'
+      );
     } catch (error) {
       console.log('connection check error', error);
       Alert.alert('Error', (error as Error).message);
@@ -315,7 +317,8 @@ export default function App() {
   };
 
   const printImageLabel = async () => {
-    const sampleImage = 'iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNkYPhfDwAChAI9jU8D1gAAAABJRU5ErkJggg==';
+    const sampleImage =
+      'iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNkYPhfDwAChAI9jU8D1gAAAABJRU5ErkJggg==';
 
     try {
       console.log('Printing image label...');
@@ -331,14 +334,14 @@ export default function App() {
     Alert.alert(
       'Printer Compatibility Info',
       'Máy in của bạn có thể chỉ hỗ trợ một số định dạng nhất định:\n\n' +
-      '✅ TSC/TSLP: Hầu hết máy in nhiệt\n' +
-      '❓ ZPL: Chỉ máy in Zebra\n' +
-      '❓ CPCL: Chỉ máy in CPCL\n' +
-      '❓ Image: Tùy thuộc vào driver\n\n' +
-      'Nếu in không thành công, hãy thử:\n' +
-      '• Kiểm tra loại máy in\n' +
-      '• Thử các thông số khác nhau\n' +
-      '• Xem log để biết lỗi chi tiết'
+        '✅ TSC/TSLP: Hầu hết máy in nhiệt\n' +
+        '❓ ZPL: Chỉ máy in Zebra\n' +
+        '❓ CPCL: Chỉ máy in CPCL\n' +
+        '❓ Image: Tùy thuộc vào driver\n\n' +
+        'Nếu in không thành công, hãy thử:\n' +
+        '• Kiểm tra loại máy in\n' +
+        '• Thử các thông số khác nhau\n' +
+        '• Xem log để biết lỗi chi tiết'
     );
   };
 
@@ -386,17 +389,27 @@ export default function App() {
   return (
     <SafeAreaView style={styles.container}>
       <StatusBar barStyle="dark-content" backgroundColor="#f8f9fa" />
-      <ScrollView style={styles.scrollView} showsVerticalScrollIndicator={false}>
+      <ScrollView
+        style={styles.scrollView}
+        showsVerticalScrollIndicator={false}
+      >
         {/* Header */}
         <View style={styles.header}>
           <Text style={styles.title}>XPrinter2 Demo</Text>
-          <Text style={styles.subtitle}>Printer Management & Label Printing</Text>
+          <Text style={styles.subtitle}>
+            Printer Management & Label Printing
+          </Text>
         </View>
 
         {/* Connection Status */}
         <View style={styles.statusCard}>
           <View style={styles.statusRow}>
-            <View style={[styles.statusIndicator, { backgroundColor: isConnected ? '#34C759' : '#FF3B30' }]} />
+            <View
+              style={[
+                styles.statusIndicator,
+                { backgroundColor: isConnected ? '#34C759' : '#FF3B30' },
+              ]}
+            />
             <Text style={styles.statusText}>
               {isConnected ? `Connected to ${address}` : 'Disconnected'}
             </Text>

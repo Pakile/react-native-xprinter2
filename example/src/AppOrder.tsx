@@ -197,7 +197,7 @@ export default function AppOrder() {
     return lines.join('\n');
   };
 
-  const textToBase64Image = (text: string): string => {
+  const textToBase64Image = (_text: string): string => {
     // Simplified base64 image for demo
     return 'iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNkYPhfDwAChAI9jU8D1gAAAABJRU5ErkJggg==';
   };
