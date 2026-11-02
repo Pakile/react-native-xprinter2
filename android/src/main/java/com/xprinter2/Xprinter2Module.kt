@@ -97,7 +97,9 @@ class Xprinter2Module(reactContext: ReactApplicationContext) :
   @ReactMethod
   fun disconnect(promise: Promise) {
     try {
-      curConnect?.close()
+      // printBitmap only queues the data; closing right away (print, then disconnect) dropped the job
+      // while the app reported it printed. The SDK closes the connection once the queue has been sent.
+      curConnect?.let { POSPrinter(it).awaitSendCompletionAndDisconnect() }
       curConnect = null
       promise.resolve(true)
     } catch (e: Exception) {
@@ -112,8 +114,13 @@ class Xprinter2Module(reactContext: ReactApplicationContext) :
     if (bitmap != null) {
       try {
         val printer = POSPrinter(curConnect)
-        val bitmapPrint = ImageUtils().resizeBitmap(bitmap, 580)
-        printer.printBitmap(bitmapPrint, POSConst.ALIGNMENT_CENTER, 760)
+        // Print at the 80mm head's width so the SDK doesn't scale the image again: a 580 → 760
+        // upscale left the strokes uneven and wider than the paper
+        val imageUtils = ImageUtils()
+        val bitmapPrint = imageUtils.toMonochrome(imageUtils.resizeBitmap(bitmap, PRINT_WIDTH_DOTS))
+        printer.printBitmap(bitmapPrint, POSConst.ALIGNMENT_CENTER, PRINT_WIDTH_DOTS)
+        // The cutter sits above the print head: feed the end of the receipt past it first (as iOS does)
+        printer.feedLine(6)
         printer.cutPaper()
       } catch (e: Exception) {
         e.printStackTrace()
@@ -153,14 +160,10 @@ class Xprinter2Module(reactContext: ReactApplicationContext) :
   @ReactMethod
   fun isConnect(promise: Promise) {
     try {
-      val printer = POSPrinter(curConnect)
-      printer.isConnect {
-        if (it == 0) {
-          promise.resolve(true)
-        } else {
-           promise.resolve(false)
-        }
-      }
+      // SDK 3.5.8 dropped POSPrinter.isConnect(callback); the connection reports its own state
+      // (deprecated in the SDK, with no replacement)
+      @Suppress("DEPRECATION")
+      promise.resolve(curConnect?.isConnect() == true)
     } catch (e: Exception) {
       e.printStackTrace()
       promise.reject("STATUS", e.message)
@@ -292,12 +295,6 @@ class Xprinter2Module(reactContext: ReactApplicationContext) :
     curConnect!!.connect(bleAddress, connectListener)
   }
 
-  private fun connectMAC(macAddress: String) {
-    curConnect?.close()
-    curConnect = POSConnect.connectMac(macAddress, connectListener)
-  }
-
-
   private val connectListener = IConnectListener { code, connInfo, msg ->
     when (code) {
       POSConnect.CONNECT_SUCCESS -> {
@@ -328,5 +325,7 @@ class Xprinter2Module(reactContext: ReactApplicationContext) :
 
   companion object {
     const val NAME = "Xprinter2"
+    // Dots per line on an 80mm (72mm printable) head at 203 dpi
+    const val PRINT_WIDTH_DOTS = 576
   }
 }
