@@ -107,7 +107,7 @@ dependencies {
   //noinspection GradleDynamicVersion
   implementation "com.facebook.react:react-native:+"
   implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
-  implementation(name: 'printer-lib-3.1.6', ext: 'aar')
+  implementation(name: 'printer-lib-3.5.8', ext: 'aar')
 }
 
 if (isNewArchitectureEnabled()) {

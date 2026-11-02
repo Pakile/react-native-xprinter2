@@ -153,14 +153,10 @@ class Xprinter2Module(reactContext: ReactApplicationContext) :
   @ReactMethod
   fun isConnect(promise: Promise) {
     try {
-      val printer = POSPrinter(curConnect)
-      printer.isConnect {
-        if (it == 0) {
-          promise.resolve(true)
-        } else {
-           promise.resolve(false)
-        }
-      }
+      // SDK 3.5.8 dropped POSPrinter.isConnect(callback); the connection reports its own state
+      // (deprecated in the SDK, with no replacement)
+      @Suppress("DEPRECATION")
+      promise.resolve(curConnect?.isConnect() == true)
     } catch (e: Exception) {
       e.printStackTrace()
       promise.reject("STATUS", e.message)
@@ -291,12 +287,6 @@ class Xprinter2Module(reactContext: ReactApplicationContext) :
     curConnect = POSConnect.createDevice(POSConnect.DEVICE_TYPE_BLUETOOTH)
     curConnect!!.connect(bleAddress, connectListener)
   }
-
-  private fun connectMAC(macAddress: String) {
-    curConnect?.close()
-    curConnect = POSConnect.connectMac(macAddress, connectListener)
-  }
-
 
   private val connectListener = IConnectListener { code, connInfo, msg ->
     when (code) {
